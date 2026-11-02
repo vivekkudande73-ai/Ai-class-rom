@@ -1,0 +1,759 @@
+# AI CLASS ROOM
+## Master Software Requirements Specification (SRS)
+### Single Source of Truth (SSOT) for Codex — Spec-Driven Development
+
+**Project Name:** AI Class Room  
+**Project Type:** AI-Powered Interactive Crime Investigation Platform  
+**Document Version:** 1.0.0  
+**Status:** Initial Development Specification  
+**Architecture:** MERN Stack  
+**AI Integration:** Google Gemini API  
+**Primary Development Tool:** OpenAI Codex  
+
+---
+
+# 1. PROJECT OVERVIEW
+
+## 1.1 Introduction
+
+AI Class Room is an AI-powered interactive crime investigation platform where users create and solve fictional investigation cases.
+
+The user provides a small scenario, story, or incident description. Based on this input, the AI generates a complete fictional crime investigation challenge.
+
+The generated investigation contains:
+
+- A fictional crime or incident.
+- Multiple suspects.
+- A hidden culprit.
+- Suspect profiles and statements.
+- AI-generated evidence.
+- Fake WhatsApp conversations.
+- AI-generated crime scene images.
+- CCTV camera recordings or simulated CCTV footage.
+- Investigation reports.
+- Clues and contradictions.
+- A final solution with an explanation.
+
+The user investigates the case by examining the available evidence and identifying the person responsible.
+
+The culprit's identity must remain hidden until the user submits their final answer or chooses to reveal the solution.
+
+## 1.2 Core Concept
+
+**User Input → AI Case Generation → Investigation Room → Evidence Analysis → Suspect Selection → Final Result**
+
+The platform should provide an immersive investigation experience rather than simply displaying an AI-generated story.
+
+## 1.3 Main Objective
+
+Build a web application that allows users to:
+
+1. Enter a short crime scenario.
+2. Generate an interactive investigation using Gemini.
+3. Explore suspects and their profiles.
+4. Examine different types of AI-generated evidence.
+5. Identify contradictions between evidence and suspect statements.
+6. Select the suspected culprit.
+7. Receive a result indicating whether their selection was correct.
+8. View the complete explanation of the investigation.
+
+---
+
+# 2. TECHNOLOGY STACK
+
+The project must use the following technology stack.
+
+| Layer | Technology |
+|---|---|
+| Frontend | React.js |
+| Build Tool | Vite |
+| Styling | Tailwind CSS |
+| Backend | Node.js |
+| Backend Framework | Express.js |
+| Database | MongoDB |
+| ODM | Mongoose |
+| AI | Google Gemini API |
+| Authentication | JWT |
+| Password Security | bcrypt |
+| API Communication | REST API |
+| File Storage | Configurable cloud/object storage |
+| Validation | Zod or equivalent |
+| Version Control | Git |
+| Development | VS Code / Codex |
+
+### 2.1 Architecture
+
+Use a standard MERN architecture.
+
+```text
+AI-CLASS-ROOM/
+│
+├── client/
+│   ├── src/
+│   │   ├── assets/
+│   │   ├── components/
+│   │   ├── pages/
+│   │   ├── layouts/
+│   │   ├── hooks/
+│   │   ├── services/
+│   │   ├── context/
+│   │   ├── utils/
+│   │   ├── routes/
+│   │   └── App.jsx
+│   │
+│   └── package.json
+│
+├── server/
+│   ├── src/
+│   │   ├── config/
+│   │   ├── controllers/
+│   │   ├── models/
+│   │   ├── routes/
+│   │   ├── middleware/
+│   │   ├── services/
+│   │   ├── ai/
+│   │   ├── validators/
+│   │   ├── utils/
+│   │   └── app.js
+│   │
+│   └── package.json
+│
+├── docs/
+│   ├── SPEC.md
+│   └── API.md
+│
+├── .env.example
+├── .gitignore
+└── README.md
+```
+
+Codex may add folders when technically necessary, but must preserve this separation of responsibilities.
+
+---
+
+# 3. USER ROLES
+
+## 3.1 Guest User
+
+A guest user can:
+
+- Visit the landing page.
+- Understand how AI Class Room works.
+- View platform features.
+- Register or log in.
+
+For the initial MVP, account registration is required before creating and saving investigation cases.
+
+## 3.2 Registered User
+
+A registered user can:
+
+- Access the dashboard.
+- Create a new investigation.
+- Enter a custom scenario.
+- Generate an AI investigation.
+- View suspects.
+- Access evidence.
+- Submit a culprit selection.
+- View investigation results.
+- View previously created investigations.
+- Delete their own investigations.
+
+## 3.3 Administrator
+
+Administrator functionality is not required in the initial MVP.
+
+The system should nevertheless be designed so that an admin role can be introduced later without rewriting the core architecture.
+
+---
+
+# 4. APPLICATION PAGES AND FEATURES
+
+## 4.1 Landing Page
+
+**Purpose:** Introduce AI Class Room to users.
+
+### Required Components
+
+- Navigation bar.
+- Logo and application name.
+- Hero section.
+- Short description.
+- Main CTA: Start Investigation.
+- How It Works section.
+- Features section.
+- Example investigation preview.
+- Footer.
+
+### Hero Section Content
+
+Suggested heading:
+
+"Think Like a Detective. Solve the Mystery."
+
+Suggested description:
+
+"Create your own investigation scenarios, explore AI-generated evidence, analyze suspects, and discover who is really responsible."
+
+CTA:
+
+- Start Investigation
+- Explore How It Works
+
+### Design Requirements
+
+- Modern investigation-themed interface.
+- Dark navy or charcoal background.
+- Accent colors such as blue, red, and amber.
+- Professional typography.
+- Responsive layout.
+- Smooth but subtle animations.
+
+---
+
+## 4.2 Authentication
+
+Implement:
+
+- User registration.
+- User login.
+- Logout.
+- Protected routes.
+- JWT authentication.
+- Password hashing.
+
+### Registration Fields
+
+- Full Name
+- Email
+- Password
+- Confirm Password
+
+### Login Fields
+
+- Email
+- Password
+
+### Security Requirements
+
+- Never store plain-text passwords.
+- Never expose JWT secrets to the frontend.
+- Validate all authentication requests.
+- Use secure token handling.
+- Apply authentication middleware to protected APIs.
+
+---
+
+## 4.3 User Dashboard
+
+After successful login, the user should land on the dashboard.
+
+### Dashboard Components
+
+1. Welcome section.
+2. Create New Investigation button.
+3. Total Investigations.
+4. Completed Investigations.
+5. Active Investigations.
+6. Recent Investigations.
+7. Investigation history.
+
+Each investigation card should contain:
+
+- Investigation title.
+- Crime category.
+- Creation date.
+- Investigation status.
+- Number of suspects.
+- Continue Investigation button.
+
+Possible statuses:
+
+- Generating
+- Ready
+- In Progress
+- Completed
+- Failed
+
+---
+
+# 5. CREATE INVESTIGATION MODULE
+
+This is the primary functionality of the application.
+
+## 5.1 User Input
+
+The user should be able to submit a short scenario or story.
+
+### Input Fields
+
+**Investigation Title:** Optional.
+
+**Scenario Description:** Required.
+
+Example:
+
+"During a college annual function, the principal's laptop containing confidential examination papers disappears from the staff room. Three students were seen near the room before the incident."
+
+### Optional Configuration
+
+- Case difficulty: Easy, Medium, Hard.
+- Number of suspects: 3–5.
+- Crime category: Theft, Missing Person, Fraud, Cybercrime, Mystery, Other.
+
+The AI should use these preferences when generating the case.
+
+### Input Validation
+
+- Scenario must not be empty.
+- Maximum scenario length: 3,000 characters.
+- User must be authenticated.
+- Reject unsupported or harmful real-world investigation requests.
+- Treat every generated case as fictional.
+
+## 5.2 Generate Investigation Button
+
+When the user clicks Generate Investigation:
+
+1. Validate the input.
+2. Send the request to the backend.
+3. Create an investigation record.
+4. Send the scenario and configuration to the Gemini service.
+5. Generate the investigation structure.
+6. Validate the AI response.
+7. Generate evidence assets.
+8. Store the investigation and evidence references.
+9. Mark the investigation as Ready.
+10. Redirect the user to the Investigation Room.
+
+The user should see a loading interface during generation.
+
+Suggested loading messages:
+
+- Creating your investigation...
+- Identifying possible suspects...
+- Preparing witness statements...
+- Generating evidence...
+- Organizing the crime timeline...
+- Finalizing your investigation...
+
+Generation must be asynchronous from the user's perspective. The frontend must not assume that the AI generation will finish within a single short HTTP request.
+
+---
+
+# 6. AI INVESTIGATION GENERATION ENGINE
+
+This is the most important backend module.
+
+Gemini must generate a logically consistent fictional investigation.
+
+## 6.1 AI Responsibilities
+
+Gemini should generate:
+
+1. Case overview.
+2. Crime description.
+3. Crime location.
+4. Crime date and time.
+5. Suspect information.
+6. Suspect statements.
+7. Witness information.
+8. Investigation timeline.
+9. Evidence descriptions.
+10. Clues and contradictions.
+11. Actual culprit.
+12. Hidden solution.
+13. Final explanation.
+
+## 6.2 Suspect Generation
+
+Generate 3–5 suspects depending on user configuration.
+
+Each suspect must have:
+
+- Unique ID.
+- Full Name.
+- Age.
+- Occupation or role.
+- Relationship to the incident.
+- Short biography.
+- Possible motive.
+- Alibi.
+- Statement.
+- Suspicious details.
+
+Example:
+
+**Suspect 1: Rahul Sharma**
+
+- Role: College Student.
+- Relationship: Friend of the victim.
+- Motive: Possible personal conflict.
+- Alibi: Claims he was in the library.
+- Statement: "I did not enter the staff room that evening."
+
+The system must not make the actual culprit obvious simply through their profile.
+
+## 6.3 Hidden Culprit
+
+The AI must select exactly one actual culprit for every successfully generated case.
+
+The culprit must be determined before evidence generation.
+
+The culprit and solution must be stored privately on the backend.
+
+**Critical security requirement:**
+
+The actual culprit must NEVER be returned in the normal investigation API response.
+
+The frontend must not receive:
+
+- Culprit ID.
+- Correct suspect ID.
+- Hidden solution.
+- Internal answer key.
+- AI generation prompt containing the answer.
+
+The backend is the authoritative source of the answer.
+
+## 6.4 Logical Consistency Engine
+
+All generated information must follow the same underlying truth.
+
+For example:
+
+If the culprit claims they were at the library at 8 PM, but CCTV evidence places them near the staff room at 8 PM, that contradiction must be intentional.
+
+The system must maintain consistency across:
+
+- Suspect identities.
+- Motives.
+- Alibis.
+- Timeline.
+- Witness statements.
+- WhatsApp conversations.
+- Images.
+- CCTV evidence.
+- Final solution.
+
+Every clue must be explainable in the final solution.
+
+No evidence should contradict the actual underlying case accidentally.
+
+Before publishing an investigation, run a validation step.
+
+If validation fails, request a correction from Gemini within a limited retry count. If it still fails, mark generation as failed rather than exposing an inconsistent case.
+
+---
+
+# 7. EVIDENCE GENERATION SYSTEM
+
+Evidence is the most important interactive component of AI Class Room.
+
+Every investigation should contain multiple evidence categories.
+
+## 7.1 Evidence Categories
+
+### A. WhatsApp Conversations
+
+Generate fictional WhatsApp conversations between relevant characters.
+
+Each conversation should include:
+
+- Sender name.
+- Receiver name.
+- Message text.
+- Timestamp.
+- Message sequence.
+- Optional attachment reference.
+
+Example:
+
+Rahul: "Are you still near the staff room?"
+
+Amit: "No, I already left."
+
+Rahul: "Did you take the laptop?"
+
+Amit: "Don't talk about it here."
+
+These are fictional messages generated for the game.
+
+Display them in a WhatsApp-style interface.
+
+### B. Crime Scene Images
+
+Generate AI-created images related to the crime.
+
+Examples:
+
+- Crime scene.
+- Missing object.
+- Office or classroom.
+- Broken lock.
+- Footprints.
+- Suspicious objects.
+- Relevant locations.
+
+Each image must include:
+
+- Evidence ID.
+- Image URL.
+- Evidence title.
+- Description.
+- Capture time.
+- Related suspect, if applicable.
+- Investigation relevance.
+
+The images should be visually consistent with the investigation scenario.
+
+### C. CCTV Camera Recordings
+
+The system should create fictional CCTV-style evidence.
+
+Each CCTV record should contain:
+
+- Camera ID.
+- Camera location.
+- Recording date.
+- Recording time.
+- Duration.
+- Description.
+- Video asset URL or simulated footage reference.
+- Important timestamps.
+- Detected activities.
+
+**Media implementation:**
+
+Use a configurable Google AI media-generation adapter for video generation when an enabled Google video-generation model is available.
+
+If video generation is unavailable, the system must provide a simulated CCTV experience using AI-generated frames, timestamps, and a playback-style timeline.
+
+The UI must clearly distinguish actual generated video from simulated CCTV footage.
+
+Do not display a fake playable video when no video asset exists.
+
+### D. Witness Statements
+
+Generate fictional statements from witnesses.
+
+Each statement should include:
+
+- Witness name.
+- Relationship to the incident.
+- Statement.
+- Time recorded.
+- Related suspect.
+- Important observations.
+
+### E. Documents and Reports
+
+Generate documents such as:
+
+- Incident reports.
+- Entry logs.
+- Attendance records.
+- Security reports.
+- Receipts.
+- Notes.
+- Printed messages.
+
+Each document should be presented in a readable document viewer.
+
+---
+
+# 8. EVIDENCE DATA STRUCTURE
+
+Every piece of evidence must follow a consistent structure.
+
+```json
+{
+  "evidenceId": "EV001",
+  "type": "image",
+  "title": "Staff Room Entrance",
+  "description": "Image captured near the staff room.",
+  "assetUrl": "https://storage.example/evidence.jpg",
+  "timestamp": "2026-10-15T20:00:00Z",
+  "relatedSuspectIds": ["S001"],
+  "importance": "high",
+  "isUnlocked": true
+}
+```
+
+Supported evidence types:
+
+- whatsapp
+- image
+- cctv
+- witness_statement
+- document
+
+The schema can contain type-specific metadata, but all evidence must maintain a common base structure.
+
+Evidence must be linked to its investigation.
+
+---
+
+# 9. INVESTIGATION ROOM
+
+The Investigation Room is the primary workspace where users solve the case.
+
+It should have a professional detective-dashboard appearance.
+
+## 9.1 Main Layout
+
+Suggested layout:
+
+```text
+-------------------------------------------------
+              AI CLASS ROOM
+-------------------------------------------------
+CASE DETAILS            INVESTIGATION ROOM
+-------------------------------------------------
+Case Overview           Evidence Board
+                        |
+Suspects                | WhatsApp
+                        | Images
+                        | CCTV
+                        | Documents
+                        |
+Timeline                |
+-------------------------------------------------
+             SUBMIT YOUR ANSWER
+-------------------------------------------------
+```
+
+## 9.2 Case Overview
+
+Display:
+
+- Case title.
+- Incident description.
+- Crime location.
+- Crime date.
+- Investigation status.
+- Difficulty.
+
+## 9.3 Suspect Panel
+
+Show all suspects as individual cards.
+
+Clicking a suspect opens a detailed profile.
+
+The profile should show:
+
+- Name.
+- Image/avatar.
+- Role.
+- Biography.
+- Motive.
+- Alibi.
+- Statement.
+
+The system must not show whether a suspect is actually guilty.
+
+## 9.4 Evidence Board
+
+The user should be able to browse all evidence.
+
+Features:
+
+- Evidence categories.
+- Evidence cards.
+- Evidence details.
+- Image viewer.
+- WhatsApp viewer.
+- CCTV player or simulator.
+- Document viewer.
+- Timeline view.
+
+Users must be able to revisit previously viewed evidence.
+
+## 9.5 Investigation Timeline
+
+Display important events chronologically.
+
+Example:
+
+| Time | Event |
+|---|---|
+| 7:00 PM | Function begins |
+| 7:30 PM | Principal enters staff room |
+| 8:00 PM | Suspect spotted near staff room |
+| 8:15 PM | Laptop reported missing |
+
+The timeline should contain only events supported by the generated case data.
+
+---
+
+# 10. CULPRIT SELECTION MODULE
+
+This is the final interaction of the investigation.
+
+## 10.1 Suspect Selection
+
+Display all suspects as selectable cards or radio options.
+
+The user must select one suspect.
+
+## 10.2 Submit Answer
+
+After selection, the user clicks:
+
+**Submit Final Answer**
+
+Before submission, show a confirmation dialog.
+
+Example:
+
+"Are you sure you want to submit this suspect as the culprit?"
+
+## 10.3 Answer Evaluation
+
+The frontend sends the selected suspect ID to the backend.
+
+The backend:
+
+1. Authenticates the user.
+2. Verifies investigation ownership.
+3. Checks investigation status.
+4. Validates the selected suspect.
+5. Compares the selected ID with the stored culprit ID.
+6. Calculates the result.
+7. Saves the result.
+8. Returns the appropriate response.
+
+## 10.4 Result Screen
+
+If the answer is correct:
+
+- Display success message.
+- Reveal the culprit.
+- Display the complete explanation.
+- Show supporting evidence.
+- Display investigation completion status.
+
+If the answer is incorrect:
+
+- Display an incorrect-answer message.
+- Reveal the correct answer and explanation after final submission.
+- Display the evidence supporting the correct answer.
+
+The MVP uses one final submission per investigation. Once submitted, the answer cannot be changed.
+
+The user can revisit the completed investigation and its explanation.
+
+---
+
+# 11. FINAL SOLUTION AND EXPLANATION
+
+The solution must explain:
+
+1. Who committed the crime?
+2. Why they committed it.
+3. How they committed it.
+4. When they committed it.
+5. Which evidence identifies them.
+6. Which statements were false.
+7. How the clues connect.
+8. Why the other
